@@ -79,15 +79,16 @@ class Wplms_Digimember_Init{
 		}
 		return $type;
 	}
+	
 	function digitest_purchase ($user_id, $product_id, $order_id, $reason){
 	    switch ($reason)
 	    {
 	        case 'order_paid':
 	        	global $wpdb;
-	        	$courses = $wpdb->get_results("SELECT meta_value FROM $wpdb->postmeta where meta_key = 'vibe_digimember_product'");
+	        	$courses = $wpdb->get_results("SELECT post_id FROM $wpdb->postmeta where meta_key = 'vibe_digimember_product' and meta_value = $product_id");
 	        	if(!empty($courses)){
 	        		foreach($courses as $course){
-	        			$course_id = $course->meta_value;
+	        			$course_id = $course->post_id;
 	        			bp_course_add_user_to_course($user_id,$course_id);
 	        		}
 	        	}
